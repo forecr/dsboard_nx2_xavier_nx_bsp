@@ -1,30 +1,32 @@
 {
   "information": {
     "release": {
-      "releaseVersion": "5.0.2",
+      "releaseVersion": "4.6.2",
       "releaseEdition": "",
-      "releaseRevision": 2
+      "releaseRevision": 0
     }
   },
   "sw": {
     "NV_L4T_FILE_SYSTEM_AND_OS_T194_COMP": {
-      "name": "File System, OS and Xavier NX BSP Install",
+      "name": "File System, OS and Forecr Xavier BSP Install",
       "isVisible": true,
       "isDetectableInstall": false,
       "versions": [
         {
+          "operatingSystems": [
+            "ubuntu1604",
+            "ubuntu1804"
+          ],
           "targetIds": [
             "JETSON_XAVIER_NX_TARGETS"
           ],
-          "prerequisites": [
-            "PREREQUISITE_APT_HOST"
-          ],
+          "prerequisites": [],
           "downloadFiles": [
             {
-              "url": "T194/Tegra_Linux_Sample-Root-Filesystem_R35.1.0_aarch64.tbz2",
-              "fileName": "Tegra_Linux_Sample-Root-Filesystem_R35.1.0_aarch64.tbz2",
-              "size": 1463783010,
-              "checksum": "9794b13e2c58f26c6a8cd2788c5e4736",
+              "url": "T194/Tegra_Linux_Sample-Root-Filesystem_R32.7.2_aarch64.tbz2",
+              "fileName": "Tegra_Linux_Sample-Root-Filesystem_R32.7.2_aarch64.tbz2",
+              "size": 1520544746,
+              "checksum": "63865585a6f10e119ff32a34b2c19cef",
               "checksumType": "md5",
               "verifyChecksum": "yes",
               "installParameters": {
@@ -36,19 +38,39 @@
                         "sudo tar xpf {{FILE_PATH}}",
                         "cd ..",
                         "sudo ./tools/l4t_flash_prerequisites.sh",
-                        "safe_apt_install \"sudo apt-get install -y binutils\" 5",
                         "sudo ./apply_binaries.sh",
                         "sudo mkdir -p rootfs/opt/nvidia/deb_repos",
-                        "wget https://github.com/forecr/dsboard_nx2_xavier_nx_bsp/raw/master/xavier_nx_JP5_0_2_bsp.tar.xz 2>downloadstatus.txt",
-                        "tar -xf xavier_nx_JP5_0_2_bsp.tar.xz",
-                        "cd ./xavier_nx_JP5_0_2_bsp",
+                        "wget https://github.com/forecr/dsboard_nx2_xavier_nx_bsp/raw/master/xavier_nx_JP4_6_1_bsp.zip",
+                        "unzip xavier_nx_JP4_6_1_bsp.zip",
+                        "cd ./xavier_nx_JP4_6_1_bsp",
                         "cp Image ../kernel/",
-                        "cp tegra194-p3668-0001-p3509-0000.dtb ../kernel/dtb/",
+                        "cp without_fan/tegra194-p3668-all-p3509-0000.dtb ../kernel/dtb/",
                         "cp tegra19x-mb1-pinmux-p3668-a01.cfg ../bootloader/t186ref/BCT/",
-                        "cp nvgpu.ko ../../",
+                        "cp jetpack462-cboot/cboot_t194.bin ../bootloader/",
                         "cd ..",
-                        "sudo ./apply_binaries.sh",
-                        "sudo mv ../nvgpu.ko rootfs/usr/lib/modules/5.10.104-tegra/kernel/drivers/gpu/nvgpu/nvgpu.ko"
+                        "sudo ./apply_binaries.sh"
+                      ]
+                    }
+                  ]
+                },
+                "installEngineQueue": "sequential",
+                "installType": "cmd"
+              }
+            },
+            {
+              "url": "T194/secureboot_R32.7.2_aarch64.tbz2",
+              "fileName": "secureboot_R32.7.2_aarch64.tbz2",
+              "size": 1348251,
+              "checksum": "c1970694e4b09eb0761670866b3c8bfe",
+              "checksumType": "md5",
+              "verifyChecksum": "yes",
+              "installParameters": {
+                "additionalParameters": {
+                  "installDir": "{{TARGET_ROOT}}/{{BUNDLE_TITLE}}_{{BOARD_ID}}/",
+                  "installCommands": [
+                    {
+                      "execBash": [
+                        "tar xjvf {{FILE_PATH}}"
                       ]
                     }
                   ]
@@ -58,35 +80,33 @@
               }
             }
           ],
-          "operatingSystems": [
-            "ubuntu1804",
-            "ubuntu2004"
-          ],
-          "version": "35.1.0",
+          "version": "32.7",
           "dependencies": [
             {
               "type": "optional",
               "id": "NV_L4T_DRIVERS_T194_COMP",
-              "ver": "35.1.0",
+              "ver": "32.7",
               "operator": "=="
             }
           ],
-          "installSizeMB": 4876.54
+          "installSizeMB": 5667.65
         }
       ],
-      "licenseIds": [
-        "NV_JETPACK_OS_EULA"
-      ],
+      "licenseId": "NV_JETPACK_OS_EULA",
       "id": "NV_L4T_FILE_SYSTEM_AND_OS_FORECR_BSP_PACKAGE_COMP",
       "isPartiallyDetectableInstall": false,
-      "installPath": "{{TARGET_ROOT}}/{{BUNDLE_TITLE}}_{{BOARD_ID}}/Linux_for_Tegra/rootfs/"
+      "installPath": "{{TARGET_ROOT}}/{{BUNDLE_TITLE}}_{{BOARD_ID}}/"
     },
     "NV_L4T_FLASH_XAVIER_NX_WITH_OS_IMAGE_COMP": {
-      "name": "Forecr Flash Jetson Xavier NX",
+      "name": "Forecr Flash Xavier NX",
       "isVisible": true,
       "estimateInstallDurationSeconds": 500,
       "versions": [
         {
+          "operatingSystems": [
+            "ubuntu1604",
+            "ubuntu1804"
+          ],
           "installSizeMB": 9520,
           "targetIds": [
             "JETSON_XAVIER_NX_TARGETS"
@@ -108,24 +128,18 @@
               }
             ]
           },
-          "operatingSystems": [
-            "ubuntu1804",
-            "ubuntu2004"
-          ],
-          "version": "35.1",
+          "version": "32.7",
           "dependencies": [
             {
               "type": "optional",
               "id": "NV_L4T_FILE_SYSTEM_AND_OS_T194_COMP",
-              "ver": "35.1.0",
+              "ver": "32.7",
               "operator": "=="
             }
           ]
         }
       ],
-      "licenseIds": [
-        "NV_JETPACK_OS_EULA"
-      ],
+      "licenseId": "NV_JETPACK_OS_EULA",
       "id": "NV_L4T_FORECR_FLASH_XAVIER_NX_JETSON_LINUX_COMP",
       "isDetectableInstall": false,
       "isPartiallyDetectableInstall": false
